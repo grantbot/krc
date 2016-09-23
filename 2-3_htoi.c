@@ -3,6 +3,8 @@ Implement htoi. Ex 2-3, p. 46.
 
 TODO:
 - Support signed values
+- Write itoh (repeatedly divide by 16, converting remainder to hex char, and
+  reversing at the end?)
 */
 
 #include <ctype.h>
@@ -44,15 +46,12 @@ long my_htoi1(char *hex) {
 }
 
 long my_htoi2(char *hex) {
-  int len;          // length of hex string, sans '0x' or '0X' prefix
   long decimal = 0; // return result
 
   // Ignore '0x' prefix
   hex = hex + 2;
 
-  len = strlen(hex);
-
-  for (int i = 0; i < len; i++) {
+  for (int i = 0; hex[i] != '\0'; i++) {
     // Each time we append a digit, the existing digits take on more
     // 'significance'. 8, when followed by a 0, represents 8 16's in hex.
     decimal = 16 * decimal + chtoi(hex[i]);
