@@ -9,12 +9,14 @@ Edge Cases:
 TODO:
 - Line comments that exist on their own line will end up being a
   blank line in the output.
+- Fix the hilarious bug that occurs when parsing this source code and which is
+  caused by line 52 in which the '\\' puts us into a QUOTE state we don't exit
+  until the "we're" in line 61, b/c the second half of '\\' is parsed as an
+  escaped quote and is thus insufficient to put us back to DEFAULT state.
+  The apostrophe in "we're" is what gets us back.
 */
 
 #include <stdio.h>
-
-#define MAXLINE 1000   // Max line length
-#define MAXINPUT 10000 // Max bytes to read from stdin
 
 enum state_t {
   DEFAULT, // Default copying state
@@ -23,14 +25,12 @@ enum state_t {
   QUOTE,   // Single or double quote
 };
 
-void strip_comments(char *out, char *in) {
+void strip_comments(FILE *out, FILE *in) {
   char c;        // Current character
   char prev = 0; // Previously read character
   enum state_t state = DEFAULT;
 
-  for (int i = 0; i < MAXINPUT - 1 && in[i] != EOF; i++) {
-    c = in[i];
-
+  while ((c = fgetc(in)) != EOF) {
     // Potentially enter a non-default state
     switch (c) {
     case '/': // Line comment
@@ -59,8 +59,9 @@ void strip_comments(char *out, char *in) {
     }
 
     // Write if we're in an allowed state
-    if (prev && (state == DEFAULT || state == QUOTE))
-      *out++ = prev;
+    if (prev && (state == DEFAULT || state == QUOTE)) {
+      fputc(prev, out);
+    }
 
     // Potentially switch back to default state
     switch (c) {
@@ -80,22 +81,15 @@ void strip_comments(char *out, char *in) {
 
     prev = c;
   }
-}
-
-int main() {
-  int i, c;
-  char in[MAXINPUT];       // Entirety of stdin
-  char stripped[MAXINPUT]; // Folded output
-
-  // Read from stdin
-  for (i = 0; (c = getchar()) != EOF && i < MAXINPUT - 1; i++) {
-    in[i] = c;
+  if (state == DEFAULT || state == QUOTE) {
+    fputc(prev, out);
   }
-  in[i] = EOF;
-
-  strip_comments(stripped, in);
-
-  printf("%s\n", stripped);
-
-  return 0;
 }
+
+/*Comment out for testing in compiled test runner*/
+// int main() {
+//   strip_comments(stdout, stdin);
+//   fclose(stdout);
+//   fclose(stdin);
+//   return 0;
+// }
