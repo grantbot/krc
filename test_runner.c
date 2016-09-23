@@ -36,7 +36,12 @@ void test_comment_strip(int *in, char *exp_out) {
 
   while ((c = fgetc(test_output)) != EOF)
     assert(c == *exp_out++);
+
+  fclose(test_output);
+  fclose(test_input);
 }
+
+void test_htoi(long exp_out, char *hex) { assert(my_htoi2(hex) == exp_out); }
 
 int main() {
   /* maxline */
@@ -48,4 +53,14 @@ int main() {
   /*Comment stripping*/
   int input3[8] = {'/', '*', 'a', '*', '/', 'b', 'c', '\0'};
   test_comment_strip(input3, "bc");
+
+  /*Hex to int conversion*/
+  test_htoi(10, "0xa");
+  test_htoi(10, "0xA");
+  test_htoi(15, "0xf");
+  test_htoi(15, "0xF");
+  test_htoi(255, "0xff");
+  test_htoi(255, "0xFF");
+  test_htoi(3735928559, "0xdeadbeef");
+  test_htoi(3735928559, "0xDEADBEEF");
 }
