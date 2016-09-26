@@ -7,3 +7,4 @@ long my_htoi2(char *hex);
 int setbits(int x, int p, int n, int y);
 int invertbits(int x, int p, int n);
 int bitcount(int x);
+int binsearch(int *sorted, int len, int target);

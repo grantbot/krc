@@ -48,6 +48,10 @@ void test_invertbits(int x, int p, int n, int expected) {
 
 void test_bitcount(int x, int expected) { assert(bitcount(x) == expected); }
 
+void test_binsearch(int *sorted, int len, int target, int expected) {
+  assert(binsearch(sorted, len, target) == expected);
+}
+
 int main() {
   /* maxline */
   char input1[7] = {'a', 'b', 'c', '\n', 'd', 'e', '\n'};
@@ -79,4 +83,8 @@ int main() {
   /*bitcount*/
   test_bitcount(37, 3);
   test_bitcount(229, 5);
+
+  /*binsearch*/
+  int sorted[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+  test_binsearch(sorted, 10, 4, 3);
 }
