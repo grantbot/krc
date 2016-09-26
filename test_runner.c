@@ -46,6 +46,8 @@ void test_invertbits(int x, int p, int n, int expected) {
   assert(invertbits(x, p, n) == expected);
 }
 
+void test_bitcount(int x, int expected) { assert(bitcount(x) == expected); }
+
 int main() {
   /* maxline */
   char input1[7] = {'a', 'b', 'c', '\n', 'd', 'e', '\n'};
@@ -73,4 +75,8 @@ int main() {
 
   /*invertbits*/
   test_invertbits(37, 5, 3, 29);
+
+  /*bitcount*/
+  test_bitcount(37, 3);
+  test_bitcount(229, 5);
 }
