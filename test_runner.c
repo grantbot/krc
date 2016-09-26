@@ -42,6 +42,10 @@ void test_setbits(int x, int p, int n, int y, int expected) {
   assert(setbits(x, p, n, y) == expected);
 }
 
+void test_invertbits(int x, int p, int n, int expected) {
+  assert(invertbits(x, p, n) == expected);
+}
+
 int main() {
   /* maxline */
   char input1[7] = {'a', 'b', 'c', '\n', 'd', 'e', '\n'};
@@ -66,4 +70,7 @@ int main() {
   /*setbits*/
   test_setbits(0, 6, 3, 31, 112);
   test_setbits(37, 5, 3, 229, 45);
+
+  /*invertbits*/
+  test_invertbits(37, 5, 3, 29);
 }
