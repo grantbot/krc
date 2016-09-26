@@ -1,10 +1,5 @@
 /*
 Test suite for Chapter 1 exercises.
-
-To run from krc/1:
-cc -c 1-16-0_maxline.c 1-23_comments.c && cc test_runner.c 1-16-0_maxline.o
-1-23_comments.o && ./a.out
-
  */
 #include <assert.h>
 #include <stdio.h>
@@ -43,6 +38,10 @@ void test_comment_strip(int *in, char *exp_out) {
 
 void test_htoi(long exp_out, char *hex) { assert(my_htoi2(hex) == exp_out); }
 
+void test_setbits(int x, int p, int n, int y, int expected) {
+  assert(setbits(x, p, n, y) == expected);
+}
+
 int main() {
   /* maxline */
   char input1[7] = {'a', 'b', 'c', '\n', 'd', 'e', '\n'};
@@ -63,4 +62,8 @@ int main() {
   test_htoi(255, "0xFF");
   test_htoi(3735928559, "0xdeadbeef");
   test_htoi(3735928559, "0xDEADBEEF");
+
+  /*setbits*/
+  test_setbits(0, 6, 3, 31, 112);
+  test_setbits(37, 5, 3, 229, 45);
 }
