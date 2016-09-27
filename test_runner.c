@@ -82,8 +82,8 @@ void test_itob(int n, char *s, int b, char *expected) {
   assert(*(s++) == '\0');
 }
 
-void test_itof(char *s, double expected) {
-  double result = itof(s);
+void test_atof(char *s, double expected) {
+  double result = atof(s);
   double diff = expected - result;
 
   printf("result: %.10f\n", result);
@@ -167,9 +167,9 @@ int main() {
   test_itob(128, s1, 16, "80");
   test_itob(-128, s1, 16, "-80");
 
-  /*itof*/
-  test_itof("-1.5", -1.5);
-  test_itof("123.5678", 123.5678);
-  test_itof("1.23e10", 12300000000);
-  test_itof("1.23e-6", 0.00000123);
+  /*atof*/
+  test_atof("-1.5", -1.5);
+  test_atof("123.5678", 123.5678);
+  test_atof("1.23e10", 12300000000);
+  test_atof("1.23e-6", 0.00000123);
 }

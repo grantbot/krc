@@ -1,5 +1,5 @@
 /*
-Write a function itof(s) that converts a string into a floating-point value.
+Write a function atof(s) that converts a string into a floating-point value.
 Extend it to handle scientific notation, e.g. "123.45e-6"
 
 p. 73.
@@ -9,7 +9,7 @@ p. 73.
 #include <math.h>
 #include <stdio.h>
 
-double itof(char *s) {
+double atof(char *s) {
   double val;
   double exp_power;              // To handle exponential notation
   double frac_power;             // To place the decimal at the end
@@ -54,7 +54,7 @@ double itof(char *s) {
 }
 
 /*Original*/
-// double itof(char *s) {
+// double atof(char *s) {
 //   double val;
 //   int power;
 //   int sign; // 1 or -1
