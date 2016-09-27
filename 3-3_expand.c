@@ -5,6 +5,7 @@ and trailing hyphens literally.
 
 TODO:
 - Less duplicate code
+- Doesn't handle trailing hyphens
 */
 
 #include <stdio.h>
@@ -22,7 +23,7 @@ void expand(char *to, char *from) {
   char *r = to; // New pointer to output string
 
   while ((c = *from++)) {
-    p = *(r - 1);
+    p = *(r - 1); // Previously copied char
 
     // Hyphen
     if (c == '-' && state == DEFAULT) {
@@ -62,7 +63,7 @@ void expand(char *to, char *from) {
         state = DEFAULT;
       }
     }
-    // Invalid expansion, copy the uncopied hyphen as a literal
+    // Invalid expansion, copy the prev seen uncopied hyphen as a literal
     if (state != DEFAULT) {
       *r++ = '-';
       state = DEFAULT;

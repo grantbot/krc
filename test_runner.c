@@ -54,11 +54,22 @@ void test_binsearch(int *sorted, int len, int target, int expected) {
 
 void test_expand(char *to, char *from, char *expected) {
   expand(to, from);
+
   while (*expected != '\0') {
     assert(*to++ == *expected++);
   }
 
   assert(*(to++) == '\0');
+}
+
+void test_itoa(int n, char *s, char *expected) {
+  itoa(n, s);
+
+  while (*expected != '\0') {
+    assert(*s++ == *expected++);
+  }
+
+  assert(*(s++) == '\0');
 }
 
 int main() {
@@ -108,4 +119,11 @@ int main() {
   test_expand(to, "fA-Zoo-0-9ar", "fABCDEFGHIJKLMNOPQRSTUVWXYZoo-0123456789ar");
   test_expand(to, "fA-Fb-do-0-9ar", "fABCDEFbcdo-0123456789ar");
   test_expand(to, "foo-a--zbar", "foo-a--zbar");
+
+  /*itoa*/
+  char s[20];
+  test_itoa(100, s, "100");
+  test_itoa(123456, s, "123456");
+  test_itoa(-100, s, "-100");
+  test_itoa(-2147483648, s, "-2147483648");
 }
