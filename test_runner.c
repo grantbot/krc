@@ -72,6 +72,16 @@ void test_itoa(int n, char *s, char *expected) {
   assert(*(s++) == '\0');
 }
 
+void test_itob(int n, char *s, int b, char *expected) {
+  itob(n, s, b);
+
+  while (*expected != '\0') {
+    assert(*s++ == *expected++);
+  }
+
+  assert(*(s++) == '\0');
+}
+
 int main() {
   /* maxline */
   char input1[7] = {'a', 'b', 'c', '\n', 'd', 'e', '\n'};
@@ -121,9 +131,25 @@ int main() {
   test_expand(to, "foo-a--zbar", "foo-a--zbar");
 
   /*itoa*/
-  char s[20];
-  test_itoa(100, s, "100");
-  test_itoa(123456, s, "123456");
-  test_itoa(-100, s, "-100");
-  test_itoa(-2147483648, s, "-2147483648");
+  char s0[20];
+  test_itoa(100, s0, "100");
+  test_itoa(123456, s0, "123456");
+  test_itoa(-100, s0, "-100");
+  test_itoa(-2147483648, s0, "-2147483648");
+
+  /*itob*/
+  char s1[20];
+  // Decimal
+  test_itob(10, s1, 10, "10");
+  test_itob(123, s1, 10, "123");
+  test_itob(-2147483648, s1, 10, "-2147483648");
+  // Octal
+  test_itob(8, s1, 8, "10");
+  test_itob(128, s1, 8, "200");
+  test_itob(-128, s1, 8, "-200");
+  // Hex
+  test_itob(10, s1, 16, "A");
+  test_itob(17, s1, 16, "11");
+  test_itob(128, s1, 16, "80");
+  test_itob(-128, s1, 16, "-80");
 }

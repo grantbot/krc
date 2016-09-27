@@ -10,3 +10,4 @@ int bitcount(int x);
 int binsearch(int *sorted, int len, int target);
 void expand(char *to, char *from);
 void itoa(int n, char *s);
+void itob(int n, char *s, int b);

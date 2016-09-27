@@ -13,7 +13,8 @@ P. 64.
 #include <stdlib.h>
 #include <string.h>
 
-void reverse(char *s) {
+// Same as in itob, don't feel like changing Makefile
+void itoa_reverse(char *s) {
   int i, j;
   char t;
 
@@ -38,7 +39,7 @@ void itoa(int n, char *s) {
   }
 
   s[i] = '\0';
-  reverse(s);
+  itoa_reverse(s);
 }
 
 /*Original*/
