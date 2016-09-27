@@ -82,6 +82,20 @@ void test_itob(int n, char *s, int b, char *expected) {
   assert(*(s++) == '\0');
 }
 
+void test_itof(char *s, double expected) {
+  double result = itof(s);
+  double diff = expected - result;
+
+  printf("result: %.10f\n", result);
+  printf("diff: %.100f\n", diff); // Floating point imprecision!
+
+  // Never use '==' comparisons with floating point values. They're
+  // fundamentally imprecise, b/c we cannot represent in finite bits an infinite
+  // decimal. Instead decide on a tolerance and assert that the difference is
+  // within it.
+  assert(diff < 1e-15);
+}
+
 int main() {
   /* maxline */
   char input1[7] = {'a', 'b', 'c', '\n', 'd', 'e', '\n'};
@@ -152,4 +166,10 @@ int main() {
   test_itob(17, s1, 16, "11");
   test_itob(128, s1, 16, "80");
   test_itob(-128, s1, 16, "-80");
+
+  /*itof*/
+  test_itof("-1.5", -1.5);
+  test_itof("123.5678", 123.5678);
+  test_itof("1.23e10", 12300000000);
+  test_itof("1.23e-6", 0.00000123);
 }

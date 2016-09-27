@@ -11,3 +11,4 @@ int binsearch(int *sorted, int len, int target);
 void expand(char *to, char *from);
 void itoa(int n, char *s);
 void itob(int n, char *s, int b);
+double itof(char *s);
