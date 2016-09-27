@@ -52,6 +52,15 @@ void test_binsearch(int *sorted, int len, int target, int expected) {
   assert(binsearch(sorted, len, target) == expected);
 }
 
+void test_expand(char *to, char *from, char *expected) {
+  expand(to, from);
+  while (*expected != '\0') {
+    assert(*to++ == *expected++);
+  }
+
+  assert(*(to++) == '\0');
+}
+
 int main() {
   /* maxline */
   char input1[7] = {'a', 'b', 'c', '\n', 'd', 'e', '\n'};
@@ -87,4 +96,16 @@ int main() {
   /*binsearch*/
   int sorted[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
   test_binsearch(sorted, 10, 4, 3);
+
+  /*expand*/
+  char to[50];
+  test_expand(to, "fooa-zbar", "fooabcdefghijklmnopqrstuvwxyzbar");
+  test_expand(to, "foo-a-zbar", "foo-abcdefghijklmnopqrstuvwxyzbar");
+  test_expand(to, "foo-a-bar", "foo-abar");
+  test_expand(to, "foo-0-1ar", "foo-01ar");
+  test_expand(to, "foo-0-9ar", "foo-0123456789ar");
+  test_expand(to, "fA-zoo-0-9ar", "fA-zoo-0123456789ar");
+  test_expand(to, "fA-Zoo-0-9ar", "fABCDEFGHIJKLMNOPQRSTUVWXYZoo-0123456789ar");
+  test_expand(to, "fA-Fb-do-0-9ar", "fABCDEFbcdo-0123456789ar");
+  test_expand(to, "foo-a--zbar", "foo-a--zbar");
 }
