@@ -101,6 +101,10 @@ void test_reverse(char *in, char *expected) {
   assert(strcmp(in, expected) == 0);
 }
 
+void test_strend(char *s, char *t, int expected) {
+  assert(strend(s, t) == expected);
+}
+
 int main() {
   /* maxline */
   char input1[7] = {'a', 'b', 'c', '\n', 'd', 'e', '\n'};
@@ -195,4 +199,11 @@ int main() {
   main's stack frame at runtime, and then tells `in` to point to that stack
   address. After being copied into the stack, it is mutable.
   */
+
+  /*strend*/
+  test_strend("foo", "bar", 0);
+  test_strend("foobar", "bar", 1);
+  test_strend("foobarx", "bar", 0);
+  test_strend("foobarx", "", 1);
+  test_strend("foobarx", "foobarx", 1);
 }

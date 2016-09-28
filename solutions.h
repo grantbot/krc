@@ -13,3 +13,4 @@ void itoa(int n, char *s);
 void itob(int n, char *s, int b);
 double atof(char *s);
 void recursive_reverse(char *s);
+int strend(char *s, char *t);
