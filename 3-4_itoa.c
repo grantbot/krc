@@ -25,22 +25,53 @@ void itoa_reverse(char *s) {
   }
 }
 
-/*Improved*/
-void itoa(int n, char *s) {
-  int i = 0; // Index into output string
-  int neg = n < 0;
+/*
+Recursive version (also handles INT_MIN)
 
-  do {
-    s[i++] = abs(n % 10) + '0';
-  } while (n /= 10); // All non-zero values are truth-y
+This one's funky. The last recursive invocation writes to the first byte in s,
+except when n's negative, in which case it writes to the second byte in s.
+Each recursive invocation then adds one to the pointer it was given and returns
+it up the call stack.
 
-  if (neg) {
-    s[i++] = '-';
+Each invocation then places a null byte after its just-written character, which
+will get overwritten by each calling frame until we reach the top-most one, the
+initial call, which will add the final null byte and return control.
+*/
+char *itoa(int n, char *s) {
+  if (n == 0)
+    return s;
+
+  if (n < 0) {
+    *s = '-';
+    s = itoa(abs(n / 10), s + 1);
+  } else {
+    s = itoa(abs(n / 10), s);
   }
 
-  s[i] = '\0';
-  itoa_reverse(s);
+  *s = abs(n % 10) + '0';
+
+  *(s + 1) = '\0'; // These will all get overwritten by the calling frame.
+  return s + 1;
 }
+
+/*
+Improved (handles INT_MIN)
+*/
+// void itoa(int n, char *s) {
+//   int i = 0; // Index into output string
+//   int neg = n < 0;
+//
+//   do {
+//     s[i++] = abs(n % 10) + '0';
+//   } while (n /= 10); // All non-zero values are truth-y
+//
+//   if (neg) {
+//     s[i++] = '-';
+//   }
+//
+//   s[i] = '\0';
+//   itoa_reverse(s);
+// }
 
 /*Original*/
 // void itoa(int n, char *s) {
