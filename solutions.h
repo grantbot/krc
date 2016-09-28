@@ -12,3 +12,4 @@ void expand(char *to, char *from);
 void itoa(int n, char *s);
 void itob(int n, char *s, int b);
 double atof(char *s);
+void recursive_reverse(char *s);

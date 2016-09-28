@@ -86,14 +86,19 @@ void test_atof(char *s, double expected) {
   double result = atof(s);
   double diff = expected - result;
 
-  printf("result: %.10f\n", result);
-  printf("diff: %.100f\n", diff); // Floating point imprecision!
+  // printf("result: %.10f\n", result);
+  // printf("diff: %.100f\n", diff); // Floating point imprecision!
 
   // Never use '==' comparisons with floating point values. They're
   // fundamentally imprecise, b/c we cannot represent in finite bits an infinite
   // decimal. Instead decide on a tolerance and assert that the difference is
   // within it.
   assert(diff < 1e-15);
+}
+
+void test_reverse(char *in, char *expected) {
+  recursive_reverse(in);
+  assert(strcmp(in, expected) == 0);
 }
 
 int main() {
@@ -172,4 +177,22 @@ int main() {
   test_atof("123.5678", 123.5678);
   test_atof("1.23e10", 12300000000);
   test_atof("1.23e-6", 0.00000123);
+
+  /*recursive reverse*/
+  char in[] = "abcd";
+  test_reverse(in, "dcba");
+
+  /*
+  The above two lines used to look like this:
+    test_reverse("abcd", "dcba");
+  passing the string literal directly into the function. This fails because the
+  compiler ends up passing a pointer to a global asciiz "abcd" constant living
+  in the data segment of your binary. Such constants are immutable, and attempts
+  to change them result in bus errors.
+
+  `char in[] = "abcd"` still creates the global "abcd" constant (that always
+  happens when you use the "" char array syntax), it just ALSO copies it onto
+  main's stack frame at runtime, and then tells `in` to point to that stack
+  address. After being copied into the stack, it is mutable.
+  */
 }
