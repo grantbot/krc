@@ -23,6 +23,9 @@ int tail(char *lines[], FILE *fp, int nlines) {
     char *p = (char *)malloc(strlen(s) + 1);
     strcpy(p, s); // Copies null byte
 
+    // Free the pointer we're about to overwrite. No-op on NULL ptrs.
+    free(lines[c % nlines]);
+
     // Save heap address to ring buffer
     lines[c++ % nlines] = p;
   }
