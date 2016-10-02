@@ -5,6 +5,11 @@ To run:
 cc 5_qsort.c && cat <file> | ./a.out
 
 p. 119
+TODO:
+- Perf opts. Use custom fgetc wrapper instead of fgets so we can calculate the
+  string length as we read instead of calling strlen in the loop. Also, malloc
+  a slab upfront and dynamically grow it if we need it, instead of mallocing
+  in the loop.
 */
 
 #include <stdio.h>
@@ -22,7 +27,7 @@ int readlines(char *lines[], FILE *fp, int maxlines) {
 
   n = 0;
   while ((fgets(line, LINEMAX, fp)) != NULL) {
-    if ((len = strlen(line)) == 1) // Skip blank lines
+    if (((len = strlen(line)) == 1) && line[0] == '\n') // Skip blank lines
       continue;
 
     if (n > maxlines || (p = (char *)malloc(len + 1)) == NULL)
@@ -77,11 +82,14 @@ int main(int argc, char const *argv[]) {
   char *lines[MAXLINES];
 
   nlines = readlines(lines, stdin, MAXLINES);
+  fclose(stdin);
 
   _qsort(lines, 0, nlines - 1, (int (*)(void *, void *))strcmp);
 
-  for (int i = 0; i < nlines; i++)
+  for (int i = 0; i < nlines; i++) {
     printf("%s\n", lines[i]);
+    free(lines[i]);
+  }
 
   return 0;
 }
