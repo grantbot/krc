@@ -12,7 +12,6 @@ p. 133
 #include "stdlib.h"
 #include "string.h"
 
-#define NKEYS 11    // Number of tracked keywords
 #define WORDMAX 100 // Max word length
 
 struct kw {
@@ -65,14 +64,17 @@ struct kw *binsearch(char *t, struct kw kwtable[], int l, int r) {
 }
 
 int main(int argc, char const *argv[]) {
+  int nkeys; // Number of keys in lookup array
   char word[WORDMAX];
   struct kw *kwptr;
 
+  nkeys = sizeof kwtable / sizeof(struct kw);
+
   while ((getword(word, stdin, WORDMAX)) > 0)
-    if ((kwptr = binsearch(word, kwtable, 0, NKEYS - 1)))
+    if ((kwptr = binsearch(word, kwtable, 0, nkeys - 1)))
       kwptr->count++;
 
-  for (int i = 0; i < NKEYS; i++)
+  for (int i = 0; i < nkeys; i++)
     printf("%-10s %d\n", kwtable[i].word, kwtable[i].count);
 
   return 0;
